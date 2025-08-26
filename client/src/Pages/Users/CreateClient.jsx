@@ -39,7 +39,7 @@ const CreateClient = ({ open, setOpen, scroll }) => {
   //////////////////////////////////////// FUNCTIONS /////////////////////////////////////
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { firstName, lastName, username, password, phone } = clientData;
+    const { firstName, lastName, username, password, phone, email } = clientData;
     const newErrors = {};
     
     if (!firstName) newErrors.firstName = "First name is required";
@@ -47,15 +47,21 @@ const CreateClient = ({ open, setOpen, scroll }) => {
     if (!username) newErrors.username = "Username is required";
     if (!password) newErrors.password = "Password is required";
     if (!phone) newErrors.phone = "Phone is required";
+    else if (phone.length !== 10) newErrors.phone = "Phone number must be 10 digits";
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
     
     setErrors(newErrors);
     
     if (Object.keys(newErrors).length > 0) return;
     
-    dispatch(createClient(clientData, setOpen));
-    dispatch(getClients());
-    navigate('/clients');
-    setClientData(initialClientState);
+    dispatch(createClient(clientData, () => {
+      setOpen(false);
+      setClientData(initialClientState);
+      dispatch(getClients());
+      navigate('/clients');
+    }));
   };
 
   const handleChange = (field, value) => {
@@ -141,6 +147,8 @@ const CreateClient = ({ open, setOpen, scroll }) => {
                     placeholder="Optional"
                     value={clientData.email}
                     onChange={(e) => handleChange('email', e.target.value)}
+                    error={!!errors.email}
+                    helperText={errors.email}
                   />
                 </td>
               </tr>

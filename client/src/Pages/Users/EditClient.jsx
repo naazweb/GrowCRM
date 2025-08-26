@@ -47,6 +47,10 @@ const EditClient = ({ open, setOpen }) => {
     if (!lastName) newErrors.lastName = "Last name is required";
     if (!username) newErrors.username = "Username is required";
     if (!phone) newErrors.phone = "Phone is required";
+    else if (phone.length !== 10) newErrors.phone = "Phone number must be 10 digits";
+    if (clientData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
     
     setErrors(newErrors);
     
@@ -138,6 +142,8 @@ const EditClient = ({ open, setOpen }) => {
                   placeholder="Optional"
                   value={clientData?.email}
                   onChange={(e) => handleInputChange("email", e.target.value)}
+                  error={!!errors.email}
+                  helperText={errors.email}
                 />
               </td>
             </tr>

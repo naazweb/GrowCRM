@@ -45,7 +45,7 @@ const CreateUser = ({ open, setOpen, scroll }) => {
   //////////////////////////////////////// FUNCTIONS /////////////////////////////////////
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { firstName, lastName, username, password, phone, email } = employeeData;
+    const { firstName, lastName, username, password, phone, email } = employeeData;;
     const newErrors = {};
     
     if (!firstName) newErrors.firstName = "First name is required";
@@ -53,13 +53,19 @@ const CreateUser = ({ open, setOpen, scroll }) => {
     if (!username) newErrors.username = "Username is required";
     if (!password) newErrors.password = "Password is required";
     if (!phone) newErrors.phone = "Phone is required";
+    else if (phone.length !== 10) newErrors.phone = "Phone number must be 10 digits";
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
     
     setErrors(newErrors);
     
     if (Object.keys(newErrors).length > 0) return;
     
-    dispatch(createEmployee(employeeData, setOpen));
-    setEmployeeData(initialEmployeeState);
+    dispatch(createEmployee(employeeData, () => {
+      setOpen(false);
+      setEmployeeData(initialEmployeeState);
+    }));
   };
 
   const handleChange = (field, value) => {
@@ -145,6 +151,8 @@ const CreateUser = ({ open, setOpen, scroll }) => {
                     placeholder="Optional"
                     value={employeeData.email}
                     onChange={(e) => handleChange('email', e.target.value)}
+                    error={!!errors.email}
+                    helperText={errors.email}
                   />
                 </td>
               </tr>

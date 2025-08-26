@@ -36,6 +36,7 @@ const EditModal = ({ open, setOpen }) => {
 
   /////////////////////////////////////// STATES ///////////////////////////////////////
   const [employeeData, setEmployeeData] = useState(currentEmployee);
+  const [errors, setErrors] = useState({});
   /////////////////////////////////////// USE EFFECT ///////////////////////////////////////
   useEffect(() => {
     setEmployeeData(currentEmployee);
@@ -44,6 +45,22 @@ const EditModal = ({ open, setOpen }) => {
   /////////////////////////////////////// FUNCTIONS ///////////////////////////////////////
   const handleSubmit = (e) => {
     e.preventDefault();
+    const { firstName, lastName, username, phone, email } = employeeData;
+    const newErrors = {};
+    
+    if (!firstName) newErrors.firstName = "First name is required";
+    if (!lastName) newErrors.lastName = "Last name is required";
+    if (!username) newErrors.username = "Username is required";
+    if (!phone) newErrors.phone = "Phone is required";
+    else if (phone.length !== 10) newErrors.phone = "Phone number must be 10 digits";
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+    
+    setErrors(newErrors);
+    
+    if (Object.keys(newErrors).length > 0) return;
+    
     dispatch(updateUser(currentEmployee._id, employeeData, employeeData?.role));
     setEmployeeData(initialEmployeeState);
     setOpen(false);
@@ -55,6 +72,7 @@ const EditModal = ({ open, setOpen }) => {
 
   const handleClose = () => {
     setOpen(false);
+    setErrors({});
   };
 
   return (
@@ -89,6 +107,8 @@ const EditModal = ({ open, setOpen }) => {
                   fullWidth
                   value={employeeData?.firstName}
                   onChange={(e) => handleInputChange("firstName", e.target.value)}
+                  error={!!errors.firstName}
+                  helperText={errors.firstName}
                 />
               </td>
             </tr>
@@ -100,6 +120,8 @@ const EditModal = ({ open, setOpen }) => {
                   fullWidth
                   value={employeeData?.lastName}
                   onChange={(e) => handleInputChange("lastName", e.target.value)}
+                  error={!!errors.lastName}
+                  helperText={errors.lastName}
                 />
               </td>
             </tr>
@@ -111,7 +133,9 @@ const EditModal = ({ open, setOpen }) => {
                     fullWidth
                     placeholder="Optional"
                     value={employeeData?.email}
-                    onChange={(e) => handleChange('email', e.target.value)}
+                    onChange={(e) => handleInputChange('email', e.target.value)}
+                    error={!!errors.email}
+                    helperText={errors.email}
                   />
                 </td>
               </tr>
@@ -123,6 +147,8 @@ const EditModal = ({ open, setOpen }) => {
                   fullWidth
                   value={employeeData?.username}
                   onChange={(e) => handleInputChange("username", e.target.value)}
+                  error={!!errors.username}
+                  helperText={errors.username}
                 />
               </td>
             </tr>
@@ -135,6 +161,8 @@ const EditModal = ({ open, setOpen }) => {
                   value={employeeData?.phone}
                   onChange={(e) => handleInputChange("phone", e.target.value)}
                   fullWidth
+                  error={!!errors.phone}
+                  helperText={errors.phone}
                 />
               </td>
             </tr>

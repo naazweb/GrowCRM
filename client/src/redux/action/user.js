@@ -146,12 +146,12 @@ export const getUser = (userId) => async (dispatch) => {
         dispatch(error(err.message))
     }
 }
-export const createClient = (clientData, setOpen) => async (dispatch) => {
+export const createClient = (clientData, onSuccess) => async (dispatch) => {
     try {
         dispatch(start())
         const { data } = await api.createClient(clientData)
         dispatch(createClientReducer(data.result))
-        setOpen(false)
+        onSuccess()
         dispatch(end())
     } catch (err) {
         const message = err?.response?.data?.message || err?.message || "Something went wrong"
@@ -159,12 +159,12 @@ export const createClient = (clientData, setOpen) => async (dispatch) => {
         dispatch(error(err.message))
     }
 }
-export const createEmployee = (employeeData, setOpen) => async (dispatch) => {
+export const createEmployee = (employeeData, onSuccess) => async (dispatch) => {
     try {
         dispatch(start())
         const { data } = await api.createEmployee(employeeData)
         dispatch(createEmployeeReducer(data.result))
-        setOpen(false)
+        onSuccess()
         dispatch(end())
     } catch (err) {
         const message = err?.response?.data?.message || err?.message || "Something went wrong"
