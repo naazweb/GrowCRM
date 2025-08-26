@@ -5,6 +5,12 @@
 3. Add client button and modal. - DONE
 4. Add client edit feature. - DONE
 
+# Misc. Fixes
+1. Email validation on add/edit employee and client forms.
+2. Phone number validation on add/edit employee and client forms.
+3. Fix - Should not clear form on API error.
+4. Fix - Should not match email exists when email is empty string.
+
 ## Required:
  Node.js 18+
 

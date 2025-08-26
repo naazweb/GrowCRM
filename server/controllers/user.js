@@ -108,8 +108,10 @@ export const getEmployees = async (req, res, next) => {
 export const createClient = async (req, res, next) => {
     try {
 
-        const findedUser = await User.findOne({ email: req.body.email })
-        if (Boolean(findedUser)) return next(createError(400, 'Email already exist'))
+        if (req.body.email && req.body.email.trim() !== '') {
+            const findedUser = await User.findOne({ email: req.body.email })
+            if (Boolean(findedUser)) return next(createError(400, 'Email already exist'))
+        }
 
         const result = await User.create({ ...req.body, role: 'client' })
         res.status(200).json({ result, message: 'client created seccessfully', success: true })
@@ -123,6 +125,11 @@ export const createEmployee = async (req, res, next) => {
 
         const findedUser = await User.findOne({ username: req.body.username })
         if (Boolean(findedUser)) return next(createError(400, 'Username already exist'))
+
+        if (req.body.email && req.body.email.trim() !== '') {
+            const emailUser = await User.findOne({ email: req.body.email })
+            if (Boolean(emailUser)) return next(createError(400, 'Email already exist'))
+        }
 
         const { password } = req.body
         const hashedPassword = await bcrypt.hash(password, 12)

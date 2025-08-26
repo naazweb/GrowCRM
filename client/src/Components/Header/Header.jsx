@@ -20,12 +20,7 @@ import {
   Alarm,
   NotificationsActiveOutlined,
   TimerOutlined,
-  QuestionAnswerOutlined,
   SettingsOutlined,
-  ControlPointDuplicateRounded,
-  Language,
-  Mail,
-  Inbox,
   Close,
   ChevronLeft,
   ChevronRight,
@@ -37,10 +32,9 @@ import {
   LocalAtmOutlined,
   ShoppingCartOutlined,
   CardGiftcardOutlined,
-  SummarizeOutlined,
   StarBorder,
-  ExpandLess,
   ExpandMore,
+  Logout,
 } from "@mui/icons-material";
 import React, { useEffect, useState } from "react";
 import { styled, useTheme } from "@mui/material/styles";
@@ -121,6 +115,7 @@ const Header = () => {
   const [state, setState] = useState({ right: false });
   const [open, setOpen] = useState(true);
   const [selectedItem, setSelectedItem] = useState(1);
+  const [open1, setOpen1] = useState(false);
 
   ////////////////////////////////////// USE EFFECTS //////////////////////////////////////
   useEffect(() => {
