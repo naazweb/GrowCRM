@@ -1,7 +1,7 @@
 # Test
 
-1. Display time zone on top bar.
-2. When create new Employee, display form validation message(under each field) instead of alert if some fields are empty
+1. Display time zone on top bar. - DONE
+2. When create new Employee, display form validation message(under each field) instead of alert if some fields are empty - DONE
 3. Add client button and modal.
 4. Add client edit feature.
 
